@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      // Safeguard against "Cannot set property fetch of #<Window> which has only a getter"
+      (function() {
+        try {
+          var nativeFetch = typeof window !== 'undefined' && window.fetch ? window.fetch.bind(window) : null;
+          var activeFetch = nativeFetch;
+
+          function getFetch() {
+            return activeFetch || (nativeFetch ? nativeFetch : window.fetch);
+          }
+          function setFetch(fn) {
+            activeFetch = fn;
+          }
+
+          try {
+            Object.defineProperty(window, 'fetch', {
+              get: getFetch,
+              set: setFetch,
+              configurable: true,
+              enumerable: true
+            });
+          } catch (_) {}
+
+          if (typeof Window !== 'undefined' && Window.prototype) {
+            try {
+              Object.defineProperty(Window.prototype, 'fetch', {
+                get: getFetch,
+                set: setFetch,
+                configurable: true,
+                enumerable: true
+              });
+            } catch (_) {}
+          }
+        } catch (e) {
+          // Silent fallback
+        }
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QB Gig Finder — QuickBooks Fiverr Affiliate Directory</title>
+    <meta name="description" content="Find the top QuickBooks Online and Desktop setup, bookkeeping, cleanup, and financial consulting gigs on Fiverr." />
+    <meta property="og:title" content="QB Gig Finder — QuickBooks Fiverr Affiliate Directory" />
+    <meta property="og:description" content="Find the top QuickBooks Online and Desktop setup, bookkeeping, cleanup, and financial consulting gigs on Fiverr." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased font-sans">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

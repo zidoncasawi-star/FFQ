@@ -1,0 +1,63 @@
+// QB Gig Finder - Prisma Schema
+// Documentation: Easily switch between SQLite (dev) and PostgreSQL (production)
+
+datasource db {
+  // For local development with SQLite:
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+  
+  // For production with PostgreSQL (Vercel Postgres, Supabase, Neon):
+  // 1. Uncomment below and comment out the sqlite provider:
+  // provider = "postgresql"
+  // url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Service {
+  id             String    @id @default(cuid())
+  title          String
+  slug           String    @unique
+  description    String?
+  fiverrUrl      String
+  mainImage      String?
+  priceStarting  Decimal?
+  category       String?
+  ratingValue    Decimal?
+  ratingCount    Int       @default(0)
+  status         String    @default("draft") // "draft" | "published"
+  packages       Package[]
+  reviews        Review[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Package {
+  id            String   @id @default(cuid())
+  serviceId     String
+  service       Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  packageName   String
+  price         Decimal?
+  deliveryDays  String?
+  description   String?
+  sortOrder     Int      @default(0)
+}
+
+model Review {
+  id             String   @id @default(cuid())
+  serviceId      String
+  service        Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  reviewerName   String?
+  rating         Decimal?
+  comment        String?
+  reviewDate     String?
+}

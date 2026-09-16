@@ -1,0 +1,8 @@
+{
+  "name": "QB Gig Finder",
+  "description": "Niche affiliate directory showcasing verified QuickBooks setup, bookkeeping, cleanup, and consulting services on Fiverr.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
